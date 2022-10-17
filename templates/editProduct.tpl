@@ -79,12 +79,12 @@
                     </div>
                 <div class="formFila">
                     <div class="formEtiqueta">
-                        <label for="descripcion">Descripcion</label>
+                        <label for="foto">Foto</label>
                     </div>
                     <div class="formValor">
-                        <label for="descripcion"></label>
-                        <input class="descripcion" id="descripcion" name="descripcion"
-                            value='{$productEdit->descripcion}'>
+                        <label for="foto"></label>
+                        <input class="foto" id="foto" name="img"
+                            value='{$productEdit->destino}'>
                     </div>
                 </div>
 
