@@ -1,33 +1,46 @@
-<?php 
+<?php
 
-class ProductView {
+class ProductView
+{
 
-    
-    function showProducts($products) {
-        $smarty = new Smarty;
-        $smarty->assign('products',$products);
-        $smarty->display('templates/header.tpl');
+    private $smarty;
+
+    function showProducts($products, $categories, $admin)
+    {
+        $smarty = new Smarty();
+        $smarty->assign('products', $products);
+        $smarty->assign('categories', $categories);
+        $smarty->assign('admin', $admin);
         $smarty->display('templates/productList.tpl');
-        $smarty->display('templates/footer.tpl');
-     
-        
-        //$products = getProducts();
-    
-        
-        
-       /*echo '<ul class="list-group">';
-        foreach ($products as $product) {
-           echo "<li class='list-group-item d-flex justify-content-between align-items-center'>
-                    <span> <b>$product->titulo</b> - $product->descripcion (prioridad $product->prioridad) </span>
-                    <a href='delete/$product->id' type='button' class='btn btn-danger ml-auto'>Borrar</a>
-                </li>";
-        }
-        echo "</ul>";
-        */
-        
     }
 
-    function showError($msg) {
+    function showProduct($product, $admin)
+    {
+        $smarty = new Smarty();
+        $smarty->assign('product', $product);
+        $smarty->assign('admin', $admin);
+        $smarty->display('templates/product.tpl');
+    }
+
+    function showProductsTheProducts($product, $admin)
+    {
+        $smarty = new Smarty();
+        $smarty->assign('products', $product);
+        $smarty->assign('admin', $admin);
+        $smarty->display('templates/category.tpl');
+    }
+
+    function editProduct($productEdit, $categories, $admin)
+    {
+        $smarty = new Smarty();
+        $smarty->assign('productEdit', $productEdit);
+        $smarty->assign('categories', $categories);
+        $smarty->assign('admin', $admin);
+        $smarty->display('templates/editProduct.tpl');
+    }
+
+    function showError($msg)
+    {
         echo "<h1> ERROR!!!!</h1>";
         echo "<h2> $msg </h2>";
     }

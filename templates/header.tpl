@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet"
-      rel="stylesheet" />
+        rel="stylesheet" />
     <link rel="stylesheet" href="css/mobilefirst.css">
     <link rel="icon" href="img/favicon.ico" />
     <title>Punto Home</title>
@@ -23,14 +23,21 @@
                 <img src="img/logo.png" id="logo" alt="logo de Punto.Home" />
             </div>
             <nav>
-                <h2 class="cintaMenuMobile"><button id="btnMenu"><span class="material-icons">&#xe5d2;</span></button> MENU</h2>
-                <ul class="itemMenuMobile">    
-                    <li class="menuAjax" id="index"><a href="#" > Home</a></li>
-                    <li class="menuAjax" id="catalogo"><a href="#"> Nuestros Productos</a></li>
-                    
+                <h2 class="cintaMenuMobile"><button id="btnMenu"><span class="material-icons">&#xe5d2;</span></button>
+                    MENU</h2>
+                <ul class="itemMenuMobile">
+                    <li class="menuAjax" id="index"><a href="showHome"> Home</a>
+                    </li>
+                    <li class="menuAjax" id="catalogo"><a href="showproducto"> Nuestros Productos</a></li>
+                    {if !($admin)}
+                        <li class="menuAjax" id="login"><a href="login"> Ingresar usuario </a></li>
+                    {else}
+                        <li class="menuAjax" id="logout"><a href="logout"> Salir </a></li>
+                    {/if}
+
                 </ul>
             </nav>
         </header>
-        <div >
+        <div>
 
-        </div>
+</div>

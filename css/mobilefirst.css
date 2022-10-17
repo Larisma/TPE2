@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: "IBM Plex Serif", sans-serif;
   margin: 0;
   padding: 0;
   line-height: 1.5;
@@ -61,6 +61,7 @@ nav ul li {
   padding: 0px;
 }
 
+
 #btnMenu {
   border: none;
   background-color: transparent;
@@ -86,6 +87,11 @@ nav ul li a:hover {
   background-color: rgb(255, 255, 255);
 }
 
+a {
+  text-decoration: none;
+  color: rgb(92, 84, 77);
+
+}
 .cintaMenuMobile {
   display: flex;
   color: rgb(92, 84, 77);
@@ -120,6 +126,7 @@ nav ul li a:hover {
   justify-content: center;
   flex-direction: column;
   width: 100%;
+  font-family: "IBM Plex Serif", sans-serif;
 }
 
 .contenido p,
@@ -130,7 +137,9 @@ article > p {
   vertical-align: middle;
   display: inline-block;
 }
-
+article {
+  width: 100%;
+}
 article,
 .articulo {
   width: 100%;
@@ -148,6 +157,7 @@ article > h1 {
   display: block;
   width: 100%;
 }
+
 
 .imagenArticulo {
   width: 90%;
@@ -225,11 +235,15 @@ tr {
   border-collapse: collapse;
 }
 
+
 tr,
 thead,
 tbody {
   width: 100%;
 }
+
+
+
 thead {
   background-color: rgb(230, 215, 175);
 }

@@ -1,53 +1,65 @@
 <?php
 
-class ProductModel {
-    
+class ProductModel
+{
+
     private $db;
-    /**
-     * *Abre la coneccion a la base de datos;
-     */
 
-    function __construct() {
-        $this->db = new PDO('mysql:host=localhost;'.'dbname=db_puntohome;chaset=utf8' , 'root', '');
-        }
-    
+    //Abre la coneccion a la base de datos;
+    function __construct()
+    {
+        $this->db = new PDO('mysql:host=localhost;' . 'dbname=db_puntohome;chaset=utf8', 'root', '');
+    }
 
-    /**
-    *Devuelve todas las tareas de la base se datos.
-    */
-    function showProducts() {
-       
-        //2. Enviar la consulta (2 sub-pasos: prepare y execute)
-        $query = $this->db->prepare('SELECT * FROM productos');
+    //Devuelve todas las tareas de la base se datos.
+
+    function showProducts()
+    {
+
+        //2. Enviar la consulta (prepare y execute)
+        $query = $this->db->prepare("SELECT productos.* , categorias.categoria FROM productos JOIN categorias ON productos.id_categoria = categorias.id_categoria");
+        //$query = $this->db->prepare('SELECT * FROM productos');
         $query->execute();
-
         //3. Obtengo la respuesta con un fetchAll (porque son muchos)
         $productos = $query->fetchAll(PDO::FETCH_OBJ); //arreglo de tareas 
 
         return $productos;
     }
 
+    function showProduct($id)
+    {
+
+        //2. Enviar la consulta (prepare y execute)
+        $query = $this->db->prepare("SELECT productos.* , categorias.categoria FROM productos JOIN categorias ON productos.id_categoria = categorias.id_categoria WHERE productos.id = ?");
+        $query->execute([$id]);
+        //3. Obtengo la respuesta con un fetch (porque es uno)
+        $product = $query->fetch(PDO::FETCH_OBJ);
+
+        return $product;
+    }
+
     // Inserta una tarea en la base de datos.
-    
-   function addProduct ($name, $category, $material, $color, $price) {
-       // 1-Abro la conexion
-       $db = $this->conect();
+    function insertProduct($name, $category, $material, $color, $detaile, $destino, $price)
+    {
 
-       // 2- Enviar la consulta (2sub-pasos prepare y exec)
-       $query = $db->prepare("INSERT INTO producto (nombre, categoria, material, color, precio) VALUES (?, ?, ?, ?, ?)");
-       $query->execute([$name, $category, $material, $color, $price]);
-       
-       // 3- Obtengo y devuelvo el ID de la tarea nueva
-       return $db->lastInsertId();
-   }
+        // 2- Enviar la consulta (prepare y exec)'
+        $query = $this->db->prepare("INSERT INTO `productos` ( `nombre`,`id_categoria`, `material`, `color`, `descripcion`,'foto , `precio`) VALUES (?,?,?,?,?,?,?)");
+        $query->execute([$name, $category, $material, $color, $detaile, $destino, $price]);
+        // 3- Obtengo y devuelvo el ID de la tarea nueva
+        return $this->db->lastInsertId();
+    }
 
-   function removeProduct($id) {
-    $db = this->connect();
+    function editProduct($name, $id_category, $material, $color, $price, $detaile, $destino, $id)
+    {
 
-    $query = $db->prepare('DELETE FROM productos WHERE id =?');
-    $query->execute([$id]);
-   }
-   
-   
+        $query = $this->db->prepare('UPDATE productos SET nombre =?, id_categoria =?, material =?, color =?, precio=?, descripcion =? foto =? WHERE id = ?');
+        $query->execute([$name, $id_category, $material, $color, $price, $detaile, $destino, $id]);
+    }
 
+    function deleteProduct($id)
+    {
+
+        $query = $this->db->prepare('DELETE FROM `productos` WHERE `productos`.`id` = ?');
+        $query->execute([$id]);
+    }
 }

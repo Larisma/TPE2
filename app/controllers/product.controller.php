@@ -1,67 +1,122 @@
 <?php
 
+
 include_once 'app/model/product.model.php';
 include_once 'app/view/product.view.php';
+include_once 'app/model/category.model.php';
+include_once 'app/helper/auth.helper.php';
 
-    
-class ProductController{
 
-    private $model;
-    private $view;
 
-    function __construct() {
-        $this->model = new ProductModel();
-        $this->view = new ProductView();
+class ProductController
+{
+
+    private $modelProduct;
+    private $viewProduct;
+    private $modelCategory;
+    private $authHelper;
+
+
+    public function __construct()
+    {
+        $this->modelProduct = new ProductModel();
+        $this->viewProduct = new ProductView();
+        $this->modelCategory = new CategoryModel();
+        $this->authHelper = new AuthHelper();
     }
 
-    /**
-     * imprime la lista de tareas
-     */
-
-     function showProducts() {
-
+    //imprime la tabla de productos
+    public function showProducts()
+    {
+        $admin = $this->authHelper->isLoggedIn();;
         //obtiene las tareas del modelo
-        $products = $this->model->showProducts();
-    
+        $products = $this->modelProduct->showProducts();
+        $categories = $this->modelCategory->showCategory();
         //actualizo la vista
-        $this->view->showProducts($products);
-        /**
-        *echo '<ul class="list-group">';
-        *foreach ($productos as $producto) {
-      */
+        $this->viewProduct->showProducts($products, $categories, $admin);
+    }
+
+    public function showProduct($id)
+    {
+
+        $admin = $this->authHelper->isLoggedIn();
+        $product = $this->modelProduct->showProduct($id);
+        $this->viewProduct->showProduct($product, $admin);
     }
 
     // agregar
-    function addProduct() {
+    function createProduct()
+    {
+
+        $admin = $this->authHelper->isLoggedIn();
+        $this->authHelper->checkLoggedIn();
         // TODO: validar entrada de datos
-    
-        $name = $_POST['nombre'];
-        $category = $_POST['categoria'];
-        $material = $_POST['material'];
-        $color = $_POST['color'];
-        $price= $_POST['precio'];
-        
-        //verifico campos obligatorios
-        if (empty($name) || empty ($category)) {
-            $this->view->showError('Faltan datos obligatorios');
-            die();
+        // $products = $this->model->addProduct();
+        // $this->view->addProduct();
+
+        $destino = null;
+        if (isset($_FILES['img'])) {
+            $uploads = getcwd() . "/uploads/";
+            $destino = tempnam($uploads, $_FILES['img']['name']);
+            move_uploaded_file($_FILES['img']['tmp_name'], $destino);
+            $destino = basename($destino);
         }
 
-        //inserto la tarea en la DB
-        $id = $this->model->addProduct($name, $category, $material, $color, $price);
-        
+        $name = $_POST['nombre'];
+        $category = $_POST['id_categoria'];
+        $material = $_POST['material'];
+        $color = $_POST['color'];
+        $detaile = $_POST['descripcion'];
+        $photo = $_POST['foto'];
+        $price = $_POST['precio'];
+
+        $id = $this->modelProduct->insertProduct($name, $category, $material, $color, $detaile, $photo, $price);
         //redirigo al listando
-        header("Location: " . BASE_URL); 
+        header('Location: ' . BASE_URL . 'showproducto');
     }
-    
+
+    //editar
+    function showEditProducts($id)
+    {
+
+        $admin = $this->authHelper->isLoggedIn();
+        $this->authHelper->checkLoggedIn();
+        $productEdit = $this->modelProduct->showProduct($id);
+        $categories = $this->modelCategory->showCategory();
+        $this->viewProduct->editProduct($productEdit, $categories, $admin);
+    }
+
+    function editProduct($id)
+    {
+        $destino = null;
+        if (isset($_FILES['img'])) {
+            $uploads = getcwd() . "/uploads/";
+            $destino = tempnam($uploads, $_FILES['img']['name']);
+            move_uploaded_file($_FILES['img']['tmp_name'], $destino);
+            $destino = basename($destino);
+        }
+        $admin = $this->authHelper->isLoggedIn();
+        $this->authHelper->checkLoggedIn();
+        // TODO: validar entrada de datos
+        $name = $_POST['nombre'];
+        $id_category = $_POST['id_categoria'];
+        $material = $_POST['material'];
+        $color = $_POST['color'];
+        //$photo = $_POST['foto'];
+        $detaile = $_POST['descripcion'];
+        $price = $_POST['precio'];
+
+        $id = $this->modelProduct->editProduct($name, $id_category, $material, $color, $detaile, $destino, $price, $id);
+        header("Location: " . BASE_URL . 'showproducto');
+    }
+
     //eliminar
-    function deleteProduct($id) {
-        $this->model->deleteProduct($id);
-        header("Location: " . BASE_URL); 
+    function deleteProduct($id)
+    {
+
+        $admin = $this->authHelper->isLoggedIn();
+        $this->authHelper->checkLoggedIn();
+        $this->modelProduct->deleteProduct($id);
+        header("Location: " . BASE_URL . 'showproducto');
     }
-
-
-
-
-
 }
