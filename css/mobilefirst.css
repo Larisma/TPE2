@@ -15,7 +15,10 @@ body {
 
   background-color: rgb(230, 215, 175);
 }
-
+.miniatura {
+  width: 10em;
+  object-fit: fill;
+}
 .contenedor {
   width: 100%;
   margin: auto;
@@ -172,6 +175,8 @@ article > h1 {
 .textoArticulo {
   width: 90%;
 }
+
+
 
 .separador {
   width: 100%;
