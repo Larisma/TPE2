@@ -39,21 +39,21 @@ class ProductModel
     }
 
     // Inserta una tarea en la base de datos.
-    function insertProduct($name, $category, $material, $color, $detaile, $destino, $price)
+    function insertProduct($name, $category, $material, $color, $detaile, $foto, $price)
     {
 
         // 2- Enviar la consulta (prepare y exec)'
-        $query = $this->db->prepare("INSERT INTO `productos` ( `nombre`,`id_categoria`, `material`, `color`, `descripcion`,'foto , `precio`) VALUES (?,?,?,?,?,?,?)");
-        $query->execute([$name, $category, $material, $color, $detaile, $destino, $price]);
+        $query = $this->db->prepare("INSERT INTO `productos` ( `nombre`,`id_categoria`, `material`, `color`, `descripcion`, `foto`, `precio`) VALUES (?,?,?,?,?,?,?)");
+        $query->execute([$name, $category, $material, $color, $detaile, $foto, $price]);
         // 3- Obtengo y devuelvo el ID de la tarea nueva
         return $this->db->lastInsertId();
     }
 
-    function editProduct($name, $id_category, $material, $color, $price, $detaile, $destino, $id)
+    function editProduct($name, $id_category, $material, $color,  $detaile, $foto, $price, $id)
     {
 
-        $query = $this->db->prepare('UPDATE productos SET nombre =?, id_categoria =?, material =?, color =?, precio=?, descripcion =? foto =? WHERE id = ?');
-        $query->execute([$name, $id_category, $material, $color, $price, $detaile, $destino, $id]);
+        $query = $this->db->prepare('UPDATE productos SET nombre =?, id_categoria =?, material =?, color =?, descripcion =?, foto =?, precio=? WHERE id = ?');
+        $query->execute([ $name, $id_category, $material, $color,  $detaile, $foto, $price, $id]);
     }
 
     function deleteProduct($id)

@@ -10,9 +10,10 @@
       <p>Color: {$product->color}</p>
       <p>Descripcion: {$product->descripcion}</p>
       <p>Precio: {$product->precio}</p>
-      {if $product->foto}
-        <img src="uploads/{$product->foto}">
+      <p>{if $product->foto}      
+        <img class="miniatura" src="{$product->foto}">
       {/if}
+      </p>
     </div>
 
   </nav>

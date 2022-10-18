@@ -20,16 +20,7 @@
                     </div>
                     <div class="formValor">
                         <select name='id_categoria' class='from_control'>
-                            {* {foreach from=$categories item=$categoria}
-
-                                {if ($productEdit->categoria == $categoria->categoria)}
-                                     <option value="{$categoria->id_categoria}">{$categoria->id_categoria}-{$categoria->categoria}</option>
-
-                                {else}
-                                    <option value="{$categoria->id_categoria}" selected>{$categoria->id_categoria}-{$categoria->categoria}</option>
-
-                                {/if}
-                            {/foreach} *}
+                            
                             {foreach from=$categories item=$categoria}
                                 <option value="{$categoria->id_categoria}"
                                     {if ($productEdit->categoria == $categoria->categoria)}selected{/if}>
@@ -70,25 +61,14 @@
                 </div>
                 <div class="formFila">
                         <div class="formEtiqueta">
-                            <label for="img"></label>
+                            <label for="foto">Foto</label>
                         </div>
                         <div class="formValor">
-                            <label for="img"></label>
-                            <input class="descripcion" id="descripcion" type="file" name="img">
+                            <label for="foto"></label>
+                            <input class="descripcion" id="descripcion" type="file" name="foto">
                         </div>
                     </div>
-                <div class="formFila">
-                    <div class="formEtiqueta">
-                        <label for="foto">Foto</label>
-                    </div>
-                    <div class="formValor">
-                        <label for="foto"></label>
-                        <input class="foto" id="foto" name="img"
-                            value='{$productEdit->destino}'>
-                    </div>
-                </div>
-
-                <div class="formFila">
+                    <div class="formFila">
                     <div class="formEtiqueta">
                         <label for="precio">Precio</label>
                     </div>
@@ -96,7 +76,10 @@
                         <input class="precio" id="precio" name="precio" value='{$productEdit->precio}'>
                     </div>
                 </div>
+
+                <input type="hidden" name="fotoAnterior" value="{$productEdit->foto}">
                 <button type="submit" class="btn">Modificar</button>
+
             </form>
         </div>
     </form>

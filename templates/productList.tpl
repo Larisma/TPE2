@@ -53,7 +53,7 @@
             <td>{$producto->material}</td>
             <td>{$producto->color}</td>
             <td>{$producto->descripcion}</td>
-            <td>{$producto->foto}</td>
+            <td><img class="miniatura" src="{$producto->foto}"></td>
             <td>{$producto->precio}</td>
 
             <td><a href="showProduct/{$producto->id}"> Ver </a></td>

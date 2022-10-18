@@ -16,57 +16,48 @@ if (!empty($_GET['action'])) {
     $action = 'showHome'; //accion por defecto si no envian
 }
 
-// parsea la accion Ej: dev/juan --> ['dev', juan] (ejemplo del video)
+
 $params = explode('/', $action);
-//Instancio el unico controlador que tengo ahora
+
 $controller = new ProductController();
-// $authController = new AuthController(); //Lo puse en cada una porque me saltaban errores asi
-// $controllerCategory = new CategoryController();
+$authController = new AuthController();
+ $controllerCategory = new CategoryController();
 
 // tabla de ruteo
 // determina que camino seguir según la acción
 switch ($params[0]) {
         //Login
     case 'login':
-        $authController = new AuthController();
         $authController->showLogin();
         break;
     case 'validate':
-        $authController = new AuthController();
         $authController->validateUser();
         break;
     case 'logout':
-        $authController = new AuthController();
         $authController->logout();
         break;
         //Categoria
     case 'showHome':
-        $controllerCategory = new CategoryController();
         $controllerCategory->showCategories();
         break;
     case 'category':
-        $controllerCategory = new CategoryController();
         $controllerCategory->showProductsTheCategory($params[1]);
         break;
     case 'categories':
-        $controllerCategory = new CategoryController();
         $controllerCategory->showCategories();
         break;
     case 'createCategory':
         $controllerCategory->createCategory();
         break;
     case 'edits':
-        $controllerCategory = new CategoryController();
         $id = $params[1];
         $controllerCategory->showEditCategory($id);
         break;
     case 'editCategory':
-        $controllerCategory = new CategoryController();
         $id = $params[1];
         $controllerCategory->editCategory($id);
         break;
     case 'deleteCategory':
-        $controllerCategory = new CategoryController();
         $controllerCategory->deleteCategory($params[1]);
         break;
         //Producto

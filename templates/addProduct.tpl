@@ -56,11 +56,12 @@
                     </div>
                     <div class="formFila">
                         <div class="formEtiqueta">
-                            <label for="img"></label>
+                            <label for="foto"></label>
                         </div>
                         <div class="formValor">
-                            <label for="img"></label>
-                            <input class="descripcion" id="descripcion" type="file" name="img">
+                            <label for="foto"></label>
+                            <input class="form" id="foto" type="file" name="foto">
+                            
                         </div>
                     </div>
                     <div class="formFila">

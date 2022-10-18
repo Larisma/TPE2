@@ -28,7 +28,7 @@ class ProductController
     //imprime la tabla de productos
     public function showProducts()
     {
-        $admin = $this->authHelper->isLoggedIn();;
+        $admin = $this->authHelper->isLoggedIn();
         //obtiene las tareas del modelo
         $products = $this->modelProduct->showProducts();
         $categories = $this->modelCategory->showCategory();
@@ -47,30 +47,24 @@ class ProductController
     // agregar
     function createProduct()
     {
-
-        $admin = $this->authHelper->isLoggedIn();
+         $admin = $this->authHelper->isLoggedIn();
         $this->authHelper->checkLoggedIn();
-        // TODO: validar entrada de datos
-        // $products = $this->model->addProduct();
-        // $this->view->addProduct();
+        if ($_FILES['foto']['type'] == "image/jpg" || $_FILES['foto']['type'] == "image/jpeg" || $_FILES['foto']['type'] == "image/png")
+        $destino= 'uploads/'. uniqid() . basename($_FILES['foto']['name']);
+       
 
-        $destino = null;
-        if (isset($_FILES['img'])) {
-            $uploads = getcwd() . "/uploads/";
-            $destino = tempnam($uploads, $_FILES['img']['name']);
-            move_uploaded_file($_FILES['img']['tmp_name'], $destino);
-            $destino = basename($destino);
-        }
-
+        if (move_uploaded_file($_FILES['foto']['tmp_name'],$destino)){
         $name = $_POST['nombre'];
         $category = $_POST['id_categoria'];
         $material = $_POST['material'];
         $color = $_POST['color'];
         $detaile = $_POST['descripcion'];
-        $photo = $_POST['foto'];
+        $foto = $destino;
         $price = $_POST['precio'];
 
-        $id = $this->modelProduct->insertProduct($name, $category, $material, $color, $detaile, $photo, $price);
+        }
+            
+        $id = $this->modelProduct->insertProduct($name, $category, $material, $color, $detaile, $foto, $price);
         //redirigo al listando
         header('Location: ' . BASE_URL . 'showproducto');
     }
@@ -88,25 +82,30 @@ class ProductController
 
     function editProduct($id)
     {
-        $destino = null;
-        if (isset($_FILES['img'])) {
-            $uploads = getcwd() . "/uploads/";
-            $destino = tempnam($uploads, $_FILES['img']['name']);
-            move_uploaded_file($_FILES['img']['tmp_name'], $destino);
-            $destino = basename($destino);
-        }
+        
         $admin = $this->authHelper->isLoggedIn();
         $this->authHelper->checkLoggedIn();
-        // TODO: validar entrada de datos
+
+        if (!empty($_FILES) && 
+                            ($_FILES['foto']['type'] == "image/jpeg" || 
+                            $_FILES['foto']['type'] == "image/jpg" || 
+                            $_FILES['foto']['type'] == "image/png" || 
+                            $_FILES['foto']['type'] == "image/gif")){
+                            $destino= 'uploads/'. uniqid() . basename($_FILES['foto']['name']);
+                            move_uploaded_file($_FILES['foto']['tmp_name'],$destino);
+                            $foto = $destino;
+                            }
+                            else{ $foto= $_POST['fotoAnterior'];
+                            }
         $name = $_POST['nombre'];
         $id_category = $_POST['id_categoria'];
         $material = $_POST['material'];
         $color = $_POST['color'];
-        //$photo = $_POST['foto'];
         $detaile = $_POST['descripcion'];
+        
         $price = $_POST['precio'];
-
-        $id = $this->modelProduct->editProduct($name, $id_category, $material, $color, $detaile, $destino, $price, $id);
+        
+        $id = $this->modelProduct->editProduct($name, $id_category, $material, $color, $detaile, $foto, $price, $id);
         header("Location: " . BASE_URL . 'showproducto');
     }
 
