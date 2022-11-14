@@ -25,72 +25,68 @@ class ApiController
         $this->data = file_get_contents("php://input");
     }
 
-    
+
     /*==================================
     Peticiones GET sin filtro
     ===================================*/
 
-    public function getAll ($params = null) {
+    public function getAll($params = null)
+    {
 
-        
+
         //Para ordenar
         $orderBy = $_GET['orderBy'] ?? null;
         $sort = $_GET['sort'] ?? null;
         //Para paginar
         $startAt = $_GET['startAt'] ?? null;
         $endAt = $_GET['endAt'] ?? null;
-        
-        // $array = $_GET[('nombre', 'id_categoria', 'precio')];
+
 
         /*=====================================
             Peticiones GET sin filtro
         ===================================*/
 
         //Sin ordenar y limitar datos
-        if ($orderBy == null && $sort == null) {
-       
+        
+        if (($orderBy == null) && ($sort == null) && ($startAt == null) && ($endAt == null)){
+
             $producto = $this->modelProduct->showProducts();
-            $this->viewApi->response($producto, 200);
-            
-        } else {
-            $this->viewApi->response("No existe producto ", 204);
+             $this->viewApi->response($producto, 200);
+          
         }
-  
-    
+
+
         //Ordenar datos sin limite
-        if($orderBy != null && $sort != null && $startAt == null && $endAt == null){
-            
+        else if (($orderBy != null) && ($sort != null) && ($startAt == null) && ($endAt == null)){
+
             $producto = $this->modelProduct->showOrderBy($orderBy, $sort);
             $this->viewApi->response($producto, 200);
-            
-        } else {
-            $this->viewApi->response("No existe producto ", 204);
+
         }
+
+
+         //Ordenar y limitar datos
+        else if (($orderBy != null) && ($sort != null) && ($startAt != null) && ($endAt != null)){
+
+            $producto = $this->modelProduct->showOrderAndPag($orderBy, $sort, $startAt, $endAt);
+            $this->viewApi->response($producto, 200);
         
-    
-        // //Ordenar y limitar datos
-        if($orderBy != null && $sort != null && $startAt != null && $endAt != null){
-        
-                $producto = $this->modelProduct->showOrderAndPag ($orderBy, $sort, $startAt, $endAt);
-                $this->viewApi->response($producto, 200);
-                
-        } else {
-            $this->viewApi->response("No existe producto ", 204);
         }
-        
-        
-        // //Limitar datos sin ordenar
-        if($orderBy == null && $sort == null && $startAt != null && $endAt != null){
-    
+
+
+        //Limitar datos sin ordenar
+        else if (($orderBy == null) && ($sort == null) && ($startAt != null) && ($endAt != null)){
+
             $producto = $this->modelProduct->showLimit ($startAt, $endAt);
             $this->viewApi->response($producto, 200);
-            
-        } else {
-        $this->viewApi->response("No existe producto ", 204);
         }
         
+         else {
+         $this->viewApi->response("No existe producto linea 89", 204);
+         }
+
     }
-  
+
 
 
 
@@ -114,14 +110,14 @@ class ApiController
         }
     }
 
-     function delete($params = null)
+    function delete($params = null)
     {
         $id = $params[':ID'];
         $producto = $this->modelProduct->showProduct($id);
         if ($producto) {
             $this->modelProduct->deleteProduct($id);
             $this->viewApi->response("El producto fue borrada con exito.", 200);
-        } else{
+        } else {
             $this->viewApi->response("El producto con el id={$id} no existe", 404);
         }
     }
@@ -131,7 +127,8 @@ class ApiController
         return json_decode($this->data);
     }
 
-    function create($params = null){
+    function create($params = null)
+    {
 
         $producto = $this->getData();
 
@@ -145,5 +142,4 @@ class ApiController
             $this->viewApi->response("El producto no fue creado", 500);
         }
     }
-                
 }
