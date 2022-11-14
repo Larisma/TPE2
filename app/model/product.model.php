@@ -11,21 +11,83 @@ class ProductModel
         $this->db = new PDO('mysql:host=localhost;' . 'dbname=db_puntohome;chaset=utf8', 'root', '');
     }
 
-    //Devuelve todas las tareas de la base se datos.
 
+
+
+    
+    
     function showProducts()
     {
-
-        //2. Enviar la consulta (prepare y execute)
-        $query = $this->db->prepare("SELECT productos.* , categorias.categoria FROM productos JOIN categorias ON productos.id_categoria = categorias.id_categoria");
-        //$query = $this->db->prepare('SELECT * FROM productos');
+        $sql = "SELECT * FROM productos";
+        // //2. Enviar la consulta (prepare y execute)
+        // $query = $this->db->prepare("SELECT productos.* , categorias.categoria FROM productos JOIN categorias ON productos.id_categoria = categorias.id_categoria");
+        
+        $query = $this->db->prepare($sql);
         $query->execute();
         //3. Obtengo la respuesta con un fetchAll (porque son muchos)
-        $productos = $query->fetchAll(PDO::FETCH_OBJ); //arreglo de tareas 
+        // $productos = $query->fetchAll(PDO::FETCH_OBJ); //arreglo de tareas 
+        
+        return $query->fetchAll(PDO::FETCH_OBJ);
 
-        return $productos;
     }
 
+    /*===========================
+    Ordenadas y/o paginadas
+    ===========================*/
+
+    function showOrderBy($orderBy, $sort)
+    {      
+        //Ordenar datos sin limite
+        $sql = "SELECT * FROM productos ORDER BY $orderBy  $sort";
+        // $query = $this->db->prepare("SELECT productos.* , categorias.categoria FROM productos JOIN categorias ON productos.id_categoria = categorias.id_categoria  ORDER BY $orderBy  $sort"); 
+        $queryDB =$this->db->prepare($sql);
+        $queryDB->execute();
+        //3. Obtengo la respuesta con un fetchAll (porque son muchos)
+        
+        return $queryDB->fetchAll(PDO::FETCH_OBJ); //arreglo de tareas 
+    }
+    
+    function showOrderAndPag ($orderBy, $sort, $startAt, $endAt) {
+        
+        //Ordenar y limitar datos       
+        $sql = "SELECT * FROM productos ORDER BY $orderBy $sort LIMIT $startAt, $endAt";
+
+        $queryDB =$this->db->prepare($sql);
+        $queryDB->execute();
+        //3. Obtengo la respuesta con un fetchAll (porque son muchos)
+       
+        return $queryDB->fetchAll(PDO::FETCH_OBJ); //arreglo de tareas 
+    }
+
+    function showLimit ($startAt, $endAt){
+        
+        //Limitar datos sin ordenar
+            
+        $sql = "SELECT * FROM productos LIMIT $startAt, $endAt";
+
+        $queryDB = $this->db->prepare($sql);
+        $queryDB->execute();
+        
+        return $queryDB -> fetchAll(PDO::FETCH_CLASS);
+
+    }
+
+
+
+   
+   
+
+
+
+
+
+
+
+
+
+
+    
+    
     function showProduct($id)
     {
 
@@ -53,7 +115,7 @@ class ProductModel
     {
 
         $query = $this->db->prepare('UPDATE productos SET nombre =?, id_categoria =?, material =?, color =?, descripcion =?, foto =?, precio=? WHERE id = ?');
-        $query->execute([ $name, $id_category, $material, $color,  $detaile, $foto, $price, $id]);
+        $query->execute([$name, $id_category, $material, $color,  $detaile, $foto, $price, $id]);
     }
 
     function deleteProduct($id)
