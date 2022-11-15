@@ -13,7 +13,7 @@ class ApiController
 
     private $modelProduct;
     private $viewApi;
-    private $modelCategory;
+
 
 
 
@@ -33,7 +33,7 @@ class ApiController
     public function getAll($params = null)
     {
 
-
+        try{
         //Para ordenar
         $orderBy = $_GET['orderBy'] ?? null;
         $sort = $_GET['sort'] ?? null;
@@ -82,22 +82,18 @@ class ApiController
         }
         
          else {
-         $this->viewApi->response("No existe producto linea 89", 204);
+         $this->viewApi->response("Sin contenido", 204);
          }
-
+        } catch (\Throwable $th) {
+            return $this->viewApi->response($th, 500);
+        }
+         
     }
-
-
-
-
-
-
-
-
-
 
     function getById($params = null)
     {
+        try{
+            
         if ($params != null) {
             $id = $params[":ID"];
             $producto = $this->modelProduct->showProduct($params[":ID"]);
@@ -106,19 +102,27 @@ class ApiController
         if ($producto) {
             $this->viewApi->response($producto, 200);
         } else {
-            $this->viewApi->response("No existe producto con el id=$id", 204);
+            $this->viewApi->response("El producto con el id= {$id} no existe", 404);
+        }
+        } catch (\Throwable $th) {
+        return $this->viewApi->response($th, 500);
         }
     }
 
     function delete($params = null)
     {
+        try{
+
         $id = $params[':ID'];
         $producto = $this->modelProduct->showProduct($id);
         if ($producto) {
             $this->modelProduct->deleteProduct($id);
             $this->viewApi->response("El producto fue borrada con exito.", 200);
         } else {
-            $this->viewApi->response("El producto con el id={$id} no existe", 404);
+            $this->viewApi->response("{El producto con el id= {$id} no existe}", 404);
+        }
+        } catch (\Throwable $th) {
+        return $this->viewApi->response($th, 500);
         }
     }
 
@@ -129,6 +133,7 @@ class ApiController
 
     function create($params = null)
     {
+        try{
 
         $producto = $this->getData();
 
@@ -140,6 +145,9 @@ class ApiController
             $this->viewApi->response($producto, 200);
         } else {
             $this->viewApi->response("El producto no fue creado", 500);
+        }
+        } catch (\Throwable $th) {
+        return $this->viewApi->response($th, 500);
         }
     }
 }

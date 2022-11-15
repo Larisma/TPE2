@@ -373,9 +373,11 @@ Luego de apretar send nos devuelve "El producto fue borrada con exito."
 ## Manejo de resultados:
 2xx Código de estado: Correcto
 Los códigos de estado HTTP de nivel 2xx indicar que la solicitud del cliente del servidor fue correcta y procesada. 
+Por ejemplo 200 OK todo fue procesado correctamente.
 
 4xx: Error del cliente
 La clasificación con la mayoría de los códigos de estado HTTP, Los códigos de estado HTTP 4xx no son lo que desea que vean los usuarios. Cualquier código de estado que comience con un 4 significa quehay un problema con el cliente. Los códigos de estado 4xx se generan normalmente si una página se ha eliminado y no se ha redirigido, o si se ha introducido incorrectamente en una URL o enlace.
+Por ejemplo ccuando quieren eliminar un producto con una id invalida el error es un 404 y el mensaje es: "El producto con el id=180 no existe"
 
 5xx: Error del servidor
 Al igual que los códigos de estado 4xx, los códigos de estado 5xx indican que hay un error,sin embargo, el error en cuestión no es probable debido a una mala conexión o el propio navegador. Los códigos de estado 5xx indican hay un problema a nivel de servidor y no puede procesar el solicitud del cliente.
