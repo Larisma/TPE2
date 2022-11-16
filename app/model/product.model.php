@@ -14,21 +14,17 @@ class ProductModel
 
 
 
-
-
     function showProducts()
     {
 
-         //2. Enviar la consulta (prepare y execute)
-         $query = $this->db->prepare("SELECT productos.* , categorias.categoria FROM productos JOIN categorias ON productos.id_categoria = categorias.id_categoria");
-         //$query = $this->db->prepare('SELECT * FROM productos');
-         $query->execute();
-         //3. Obtengo la respuesta con un fetchAll (porque son muchos)
-         $productos = $query->fetchAll(PDO::FETCH_OBJ); //arreglo de tareas 
- 
-         return $productos;
+        //2. Enviar la consulta (prepare y execute)
+        $query = $this->db->prepare("SELECT productos.* , categorias.categoria FROM productos JOIN categorias ON productos.id_categoria = categorias.id_categoria");
+        //$query = $this->db->prepare('SELECT * FROM productos');
+        $query->execute();
+        //3. Obtengo la respuesta con un fetchAll (porque son muchos)
+        $productos = $query->fetchAll(PDO::FETCH_OBJ); //arreglo de tareas 
 
-        
+        return $productos;
     }
 
     /*===========================
@@ -78,22 +74,6 @@ class ProductModel
 
         return $productos;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     function showProduct($id)
     {
